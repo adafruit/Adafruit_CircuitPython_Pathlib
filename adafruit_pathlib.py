@@ -166,14 +166,16 @@ class Path:
 
     @staticmethod
     def _get_mount_for(path):
-        path = path.rstrip("/")
+        if len(path) > 1:
+            path = path.rstrip("/")
+
         if path[0] != "/":
             path = os.getcwd() + "/" + path
         while len(path) > 0:
             try:
                 return storage.getmount(path)
             except OSError:
-                pos = path.rfind("/")
+                pos = path.rfind("/") + 1
                 path = path[:pos]
         return None
 
@@ -186,7 +188,7 @@ class Path:
             raise NotImplementedError("? single wildcards not implemented.")
 
         if n_wildcards == 0:
-            raise ValueError
+            raise ValueError("Must have exactly one wildcard")
         elif n_wildcards > 1:
             raise NotImplementedError("Multiple * wildcards not implemented.")
 
@@ -349,9 +351,7 @@ class Path:
         """
         if not self.is_dir():
             raise OSError(errno.ENOTDIR, f"Not a directory: {self._path}")
-        print(f"self._path: {self._path}")
         for name in os.listdir(self._path):
-            print(f"name: {name}")
             yield Path(self._path, name)
 
     def __hash__(self):
