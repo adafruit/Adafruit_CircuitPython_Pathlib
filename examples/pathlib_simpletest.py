@@ -12,10 +12,10 @@ def print_directory_tree(path: adafruit_pathlib.Path, prefix: str = ""):
 
     entries = sorted(path.iterdir(), key=lambda x: (not x.is_dir(), x.name.lower()))
     for index, entry in enumerate(entries):
-        connector = "├── " if index < len(entries) - 1 else "└── "
+        connector = "|-- " if index < len(entries) - 1 else "'-- "
         print(f"{prefix}{connector}{entry.name}")
         if entry.is_dir():
-            extension = "│   " if index < len(entries) - 1 else "    "
+            extension = "|   " if index < len(entries) - 1 else "    "
             print_directory_tree(entry, prefix + extension)
 
 
