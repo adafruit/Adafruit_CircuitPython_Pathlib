@@ -350,7 +350,7 @@ class Path:
             OSError: If self.is_dir() is False.
         """
         if not self.is_dir():
-            raise OSError(errno.ENOTDIR, f"Not a directory: {self._path}")
+            raise OSError(f"Not a directory: {self._path}")
         for name in os.listdir(self._path):
             yield Path(self._path, name)
 
